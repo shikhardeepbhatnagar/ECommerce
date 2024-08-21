@@ -1,0 +1,123 @@
+version: '3.8'
+services:
+  service-b:
+    build:
+      context: .
+      dockerfile: OrderAPI/Dockerfile
+    ports:
+      - 3020:8080
+    environment:
+      - spring__application__name=OrderAPI
+      - ASPNETCORE_ENVIRONMENT=Development
+      - EUREKA__CLIENT__SERVICEURL__DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA__INSTANCE__LEASEEXPIRATIONDURATIONINSECONDS=5
+      - EUREKA__INSTANCE__LEASERENEWALINTERVALINSECONDS=3
+      - MessageBroker__Host=amqp://ecommerce-mq:5672
+      - MessageBroker__UserName=guest
+      - MessageBroker__Password=guest
+    volumes:
+      - ./Data:/app/Data
+    depends_on:
+      - eureka-server
+      - rabbitmq
+    networks:
+      - eureka-network
+  service-d:
+    build:
+      context: .
+      dockerfile: ShoppingCartAPI/Dockerfile
+    ports:
+      - 3060:8080
+    environment:
+      - spring__application__name=ShoppingCartAPI
+      - ASPNETCORE_ENVIRONMENT=Development
+      - EUREKA__CLIENT__SERVICEURL__DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA__INSTANCE__LEASEEXPIRATIONDURATIONINSECONDS=5
+      - EUREKA__INSTANCE__LEASERENEWALINTERVALINSECONDS=3
+      - MessageBroker__Host=amqp://ecommerce-mq:5672
+      - MessageBroker__UserName=guest
+      - MessageBroker__Password=guest
+    volumes:
+      - ./Data:/app/Data
+    depends_on:
+      - eureka-server
+      - rabbitmq
+    networks:
+      - eureka-network
+  service-c:
+    build:
+      context: .
+      dockerfile: ProductAPI/Dockerfile
+    ports:
+      - 3040:8080
+    environment:
+      - spring__application__name=ProductAPI
+      - ASPNETCORE_ENVIRONMENT=Development
+      - EUREKA__CLIENT__SERVICEURL__DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA__INSTANCE__LEASEEXPIRATIONDURATIONINSECONDS=5
+      - EUREKA__INSTANCE__LEASERENEWALINTERVALINSECONDS=3
+    volumes:
+      - ./Data:/app/Data
+    depends_on:
+      - eureka-server
+    networks:
+      - eureka-network
+  eureka-server:
+    image: steeltoeoss/eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_INSTANCE_HOSTNAME=eureka-server
+    networks:
+      - eureka-network
+  ocelot-gateway:
+    build:
+      context: .
+      dockerfile: OcelotGateway/Dockerfile
+    ports:
+      - "5000:8080" # Map port 5000 on the host to port 8080 in the container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - eureka-network
+  service-a:
+    build:
+      context: .
+      dockerfile: AuthAPI/Dockerfile
+    ports:
+      - 3000:8080
+    environment:
+      - spring__application__name=AuthAPI
+      - ASPNETCORE_ENVIRONMENT=Development
+      - EUREKA__CLIENT__SERVICEURL__DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA__INSTANCE__LEASEEXPIRATIONDURATIONINSECONDS=5
+      - EUREKA__INSTANCE__LEASERENEWALINTERVALINSECONDS=3
+      - MessageBroker__Host=amqp://ecommerce-mq:5672
+      - MessageBroker__UserName=guest
+      - MessageBroker__Password=guest
+    volumes:
+      - ./Data:/app/Data
+    depends_on:
+      - eureka-server
+      - rabbitmq
+    networks:
+      - eureka-network
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq'
+    hostname: ecommerce-mq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    restart: always
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - eureka-network
+networks:
+  eureka-network:
+    driver: bridge

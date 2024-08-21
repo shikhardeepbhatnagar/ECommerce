@@ -1,0 +1,279 @@
+﻿{
+
+
+  "Routes": [
+    //"AUTH API": "http://localhost:8081",
+    {
+      "DownstreamPathTemplate": "/api/auth/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-a",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/register",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-a",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/login",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth/assign-role",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-a",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/assign-role",
+      "UpstreamHttpMethod": [ "Post" ]
+
+    },
+
+
+    //"Order API": "http://localhost:8080",
+    {
+      "DownstreamPathTemplate": "/api/order/GetOrders?userId={id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-b",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order/GetOrders/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/order/GetOrders?userId=''",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-b",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order/GetOrders/",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/order/GetOrder/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-b",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order/GetOrder/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/order/GetOrders",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-b",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order/GetOrders",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/order/CreateOrder",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-b",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order/CreateOrder",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/order/UpdateOrderStatus/{orderId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-b",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/order/UpdateOrderStatus/{orderId}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    //{
+    //  "DownstreamPathTemplate": "/api/account/GetAccountByCustomerId?customerId={id}",
+    //  "DownstreamScheme": "http",
+    //  "DownstreamHostAndPorts": [
+    //    {
+    //      "Host": "service-b",
+    //      "Port": 8080
+    //    }
+    //  ],
+    //  "UpstreamPathTemplate": "/api/account/GetAccountByCustomerId/{id}",
+    //  "UpstreamHttpMethod": [ "Get" ],
+    //  "AuthenticationOptions": {
+    //    "AuthenticationProviderKey": "Bearer"
+    //  }
+    //},
+    //{
+    //  "DownstreamPathTemplate": "/api/account/DeleteAccount{id}",
+    //  "DownstreamScheme": "http",
+    //  "DownstreamHostAndPorts": [
+    //    {
+    //      "Host": "service-b",
+    //      "Port": 8080
+    //    }
+    //  ],
+    //  "UpstreamPathTemplate": "/api/account/DeleteAccount{id}",
+    //  "UpstreamHttpMethod": [ "DELETE" ],
+    //  "AuthenticationOptions": {
+    //    "AuthenticationProviderKey": "Bearer"
+    //  }
+    //}
+
+
+    //"Product API": "http://localhost:8080",    
+    {
+      "DownstreamPathTemplate": "/api/product",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-c",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/product",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/product/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-c",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/product/{id}",
+      "UpstreamHttpMethod": [ "Get", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/product",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-c",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/product",
+      "UpstreamHttpMethod": [ "POST", "PUT" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+
+
+    //"ShoppingCartAPI": "http://localhost:7003",
+    {
+      "DownstreamPathTemplate": "/api/cart/GetCart/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-d",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/GetCart/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/cart/RemoveCart",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-d",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/RemoveCart",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/cart/CartUpsert",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-d",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/CartUpsert",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/cart/Checkout/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "service-d",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/cart/Checkout/{userId}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    }
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://ocelot-gateway:8080" // The service name and port within Docker Compose
+  }
+}
